@@ -129,6 +129,84 @@ resource "aws_api_gateway_integration" "generate_diets_integration" {
   uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-diet-generator/invocations"
 }
 
+# LIST NUTRITIONIST /nutritionists/list
+resource "aws_api_gateway_resource" "nutritionists_nutri_id" {
+  rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
+  parent_id   = aws_api_gateway_rest_api.nutrifai_api.root_resource_id
+  path_part   = "nutritionists"
+}
+
+resource "aws_api_gateway_resource" "nutritionists_list" {
+  rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
+  parent_id   = aws_api_gateway_resource.nutritionists_nutri_id.id
+  path_part   = "list"
+}
+
+resource "aws_api_gateway_method" "nutritionists_list_method" {
+  rest_api_id   = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id   = aws_api_gateway_resource.nutritionists_list.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "nutritionists_list_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id             = aws_api_gateway_resource.nutritionists_list.id
+  http_method             = aws_api_gateway_method.nutritionists_list_method.http_method
+  credentials             = aws_iam_role.execution_role.arn
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
+}
+
+# BOOK NUTRITIONIST /nutritionists/book
+resource "aws_api_gateway_resource" "nutritionists_book" {
+  rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
+  parent_id   = aws_api_gateway_resource.nutritionists_nutri_id.id
+  path_part   = "book"
+}
+
+resource "aws_api_gateway_method" "nutritionists_book_method" {
+  rest_api_id   = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id   = aws_api_gateway_resource.nutritionists_book.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "nutritionists_book_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id             = aws_api_gateway_resource.nutritionists_book.id
+  http_method             = aws_api_gateway_method.nutritionists_book_method.http_method
+  credentials             = aws_iam_role.execution_role.arn
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
+}
+
+# CREATE NUTRITIONIST /nutritionists/create
+resource "aws_api_gateway_resource" "nutritionists_create" {
+  rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
+  parent_id   = aws_api_gateway_resource.nutritionists_nutri_id.id
+  path_part   = "create"
+}
+
+resource "aws_api_gateway_method" "nutritionists_create_method" {
+  rest_api_id   = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id   = aws_api_gateway_resource.nutritionists_create.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "nutritionists_create_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id             = aws_api_gateway_resource.nutritionists_create.id
+  http_method             = aws_api_gateway_method.nutritionists_create_method.http_method
+  credentials             = aws_iam_role.execution_role.arn
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
+}
+
 # AUTHORIZER
 resource "aws_api_gateway_authorizer" "session_authorizer" {
   name                   = "session-authorizer"
@@ -165,6 +243,16 @@ resource "aws_api_gateway_deployment" "deployment" {
       aws_api_gateway_resource.diets_generate.id,
       aws_api_gateway_method.generate_diets_method.id,
       aws_api_gateway_integration.generate_diets_integration.id,
+      aws_api_gateway_resource.nutritionists_nutri_id.id,
+      aws_api_gateway_resource.nutritionists_list.id,
+      aws_api_gateway_method.nutritionists_list_method.id,
+      aws_api_gateway_integration.nutritionists_list_integration.id,
+      aws_api_gateway_resource.nutritionists_book.id,
+      aws_api_gateway_method.nutritionists_book_method.id,
+      aws_api_gateway_integration.nutritionists_book_integration.id,
+      aws_api_gateway_resource.nutritionists_create.id,
+      aws_api_gateway_method.nutritionists_create_method.id,
+      aws_api_gateway_integration.nutritionists_create_integration.id,
     ]))
   }
 
