@@ -139,12 +139,11 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 ### Book Nutritionist Appointment
 
 - **Method**: `POST`
-- **Path**: `/appointments`
+- **Path**: `/nutritionist/{nutriId}/appointments`
 - **Description**: Book an appointment with a nutritionist
 - **Example Request Body**:
 ```json
 {
-  "nutriId": "user",
   "appointmentDate": "09/11/2024",
   "patientId": "1"
 }
@@ -154,7 +153,7 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 [
   {
     "patientId": "1",
-    "nutriId": "user",
+    "nutriId": "nutriId",
     "appointmentId": "8b2772c4-34cc-4290-9ac2-861d531852d7",
     "appointmentDate": "09/11/2024"
   }

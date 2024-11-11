@@ -165,30 +165,6 @@ resource "aws_api_gateway_integration" "nutritionists_integration" {
   uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
 }
 
-# BOOK NUTRITIONIST /appointments
-resource "aws_api_gateway_resource" "appointments" {
-  rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
-  parent_id   = aws_api_gateway_rest_api.nutrifai_api.root_resource_id
-  path_part   = "appointments"
-}
-
-resource "aws_api_gateway_method" "appointments_method" {
-  rest_api_id   = aws_api_gateway_rest_api.nutrifai_api.id
-  resource_id   = aws_api_gateway_resource.appointments.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "appointments_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.nutrifai_api.id
-  resource_id             = aws_api_gateway_resource.appointments.id
-  http_method             = aws_api_gateway_method.appointments_method.http_method
-  credentials             = aws_iam_role.execution_role.arn
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
-}
-
 # UPDATE appointments /nutritionists/<nutriId>/appointments/<appointmentId>
 resource "aws_api_gateway_resource" "nutri_id" {
   rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
@@ -196,10 +172,28 @@ resource "aws_api_gateway_resource" "nutri_id" {
   path_part   = "{nutriId}"
 }
 
+# BOOK NUTRITIONIST /nutritionists/<nutriId>/appointments
 resource "aws_api_gateway_resource" "nutri_appointments" {
   rest_api_id = aws_api_gateway_rest_api.nutrifai_api.id
   parent_id   = aws_api_gateway_resource.nutri_id.id
   path_part   = "appointments"
+}
+
+resource "aws_api_gateway_method" "appointments_method" {
+  rest_api_id   = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id   = aws_api_gateway_resource.nutri_appointments.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "appointments_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.nutrifai_api.id
+  resource_id             = aws_api_gateway_resource.nutri_appointments.id
+  http_method             = aws_api_gateway_method.appointments_method.http_method
+  credentials             = aws_iam_role.execution_role.arn
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${data.aws_caller_identity.current.account_id}:function:lambda-nutritionist/invocations"
 }
 
 resource "aws_api_gateway_resource" "nutri_appointments_id" {
@@ -263,11 +257,19 @@ resource "aws_api_gateway_deployment" "deployment" {
       aws_api_gateway_resource.nutritionists.id,
       aws_api_gateway_method.nutritionists_method.id,
       aws_api_gateway_integration.nutritionists_integration.id,
-      aws_api_gateway_resource.appointments.id,
-      aws_api_gateway_method.appointments_method.id,
-      aws_api_gateway_integration.appointments_integration.id,
       aws_api_gateway_resource.nutri_id.id,
       aws_api_gateway_resource.nutri_appointments.id,
+      aws_api_gateway_method.appointments_method.id,
+      aws_api_gateway_integration.appointments_integration.id,
+      aws_api_gateway_resource.nutri_appointments_id.id,
+      aws_api_gateway_method.update_nutri_appointments_method.id,
+      aws_api_gateway_integration.update_appointments_integration.id,
+      aws_api_gateway_resource.nutri_appointments_id.id,
+      aws_api_gateway_method.update_nutri_appointments_method.id,
+      aws_api_gateway_integration.update_appointments_integration.id,
+      aws_api_gateway_resource.nutri_appointments_id.id,
+      aws_api_gateway_method.update_nutri_appointments_method.id,
+      aws_api_gateway_integration.update_appointments_integration.id,
       aws_api_gateway_resource.nutri_appointments_id.id,
       aws_api_gateway_method.update_nutri_appointments_method.id,
       aws_api_gateway_integration.update_appointments_integration.id,
