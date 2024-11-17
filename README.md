@@ -73,9 +73,33 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 - **Method**: `GET`
 - **Path**: `/diets`
 - **Description**: Retrieve a list of diets linked to the userId
-- **Example Request Body**:
+- **Example Response Body**:
 ```json
-
+{
+  "dietId": "1b93adfe-2998-4c7a-a9e3-32756f177153",
+  "userId": "isa",
+  "meals": [
+    {
+      "refeicao": "Café da manhã",
+      "alimentos": [
+        {
+          "alimento": "Aveia sem glúten",
+          "quantidade": "1/2 xícara",
+          "calorias": "150"
+        },
+        {
+          "alimento": "Leite de amêndoas sem açúcar",
+          "quantidade": "1 xícara",
+          "calorias": "30"
+        },
+        ...
+      ],
+  "calories": "1667",
+  "importantObservations": "Esta dieta é uma sugestão e pode precisar de ajustes dependendo das necessidades individuais. É importante beber bastante água ao longo do dia.  A quantidade de calorias pode variar dependendo do tamanho e tipo de alimento usado.  Consulte seu médico ou nutricionista antes de iniciar qualquer dieta de emagrecimento, principalmente considerando a hipertensão.  Procure variar os alimentos para garantir o aporte de todos os nutrientes. Lembre-se que esta dieta é sem glúten.",
+  "creationDate": "2024-11-17 18:12:50.896642",
+  "title": "Dieta para Emagrecimento - Hipertensão - Sem Glúten",
+  "goal": "Perder peso"
+}
 ```
 ----
 ### Get Diets by ID
@@ -83,9 +107,33 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 - **Method**: `GET`
 - **Path**: `/diets/{dietId}`
 - **Description**: Retrieve a specific diet by its Id.
-- **Example Request Body**:
+- **Example Response Body**:
 ```json
-
+{
+  "dietId": "1b93adfe-2998-4c7a-a9e3-32756f177153",
+  "userId": "isa",
+  "meals": [
+    {
+      "refeicao": "Café da manhã",
+      "alimentos": [
+        {
+          "alimento": "Aveia sem glúten",
+          "quantidade": "1/2 xícara",
+          "calorias": "150"
+        },
+        {
+          "alimento": "Leite de amêndoas sem açúcar",
+          "quantidade": "1 xícara",
+          "calorias": "30"
+        },
+        ...
+      ],
+  "calories": "1667",
+  "importantObservations": "Esta dieta é uma sugestão e pode precisar de ajustes dependendo das necessidades individuais. É importante beber bastante água ao longo do dia.  A quantidade de calorias pode variar dependendo do tamanho e tipo de alimento usado.  Consulte seu médico ou nutricionista antes de iniciar qualquer dieta de emagrecimento, principalmente considerando a hipertensão.  Procure variar os alimentos para garantir o aporte de todos os nutrientes. Lembre-se que esta dieta é sem glúten.",
+  "creationDate": "2024-11-17 18:12:50.896642",
+  "title": "Dieta para Emagrecimento - Hipertensão - Sem Glúten",
+  "goal": "Perder peso"
+}
 ```
 ----
 ### Post Diets
@@ -95,7 +143,45 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 - **Description**: Generate a new diet linked to the userId
 - **Example Request Body**:
 ```json
-
+{
+  "idade": 30,
+  "peso": 70,
+  "altura": 175,
+  "sexo": "Masculino",
+  "nivel_atividade": "Moderado",
+  "condicao_saude": "Hipertensão",
+  "alergia": "Glúten",
+  "refeicoes_diarias": 5,
+  "objetivo": "Perder peso"
+}
+```
+- **Example Response Body**:
+```json
+{
+  "dietId": "1b93adfe-2998-4c7a-a9e3-32756f177153",
+  "userId": "isa",
+  "meals": [
+    {
+      "refeicao": "Café da manhã",
+      "alimentos": [
+        {
+          "alimento": "Aveia sem glúten",
+          "quantidade": "1/2 xícara",
+          "calorias": "150"
+        },
+        {
+          "alimento": "Leite de amêndoas sem açúcar",
+          "quantidade": "1 xícara",
+          "calorias": "30"
+        },
+        ...
+      ],
+  "calories": "1667",
+  "importantObservations": "Esta dieta é uma sugestão e pode precisar de ajustes dependendo das necessidades individuais. É importante beber bastante água ao longo do dia.  A quantidade de calorias pode variar dependendo do tamanho e tipo de alimento usado.  Consulte seu médico ou nutricionista antes de iniciar qualquer dieta de emagrecimento, principalmente considerando a hipertensão.  Procure variar os alimentos para garantir o aporte de todos os nutrientes. Lembre-se que esta dieta é sem glúten.",
+  "creationDate": "2024-11-17 18:12:50.896642",
+  "title": "Dieta para Emagrecimento - Hipertensão - Sem Glúten",
+  "goal": "Perder peso"
+}
 ```
 ----
 ### Get Nutritionists
