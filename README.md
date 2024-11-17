@@ -206,6 +206,29 @@ Cookie:sessionId=1b9ba95110f586136b4a77592a9e9e40
 ]
 ```
 ----
+### Update an Nutritionist Appointment using session data
+
+- **Method**: `PUT`
+- **Path**: `/nutritionists/<nutriId>/appointments/<appointmentId>/book`
+- **Headers**: `Cookie:sessionId=id`
+- **Description**: Update an appointment using session data
+- **Example Request Body**:
+```json
+{}
+```
+- **Example Response Body**:
+```json
+[
+  {
+    "appointmentTime": "15:41:00",
+    "patientId": "isa",
+    "nutriId": "ana",
+    "appointmentId": "7cbd08d9-5c06-417a-976f-afe63a4284bf",
+    "appointmentDate": "2024-11-17"
+  }
+]
+```
+----
 ## Requirements
 
 To use this project, ensure you have the following installed:
