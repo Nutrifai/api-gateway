@@ -16,7 +16,7 @@ provider "aws" {
 module "lambda_authorizer" {
   source = "./modules/lambda_authorizer"
   
-  lambda_authorizer_name = var.lambda_authorizer_name
+  lambda_authorizer_name = "${var.lambda_authorizer_name}"
 }
 
 module "api_gateway" {

@@ -1,7 +1,7 @@
 # NutrifAI - API Gateway and Lambda Session Authorizer
 This repository includes the code for setting up an HTTP API Gateway and a Lambda function that serves as an authorizer, verifying user authentication and ensuring they have the necessary permissions to access data from the application's backend.
 
-1. **API Gateway REST**: A REST API using AWS API Gateway.
+1. **API Gateway**: API using AWS API Gateway.
 2. **Lambda Session Authorizer**: A Lambda function responsible for authenticating user sessions.
 
 Both modules are deployed using **Terraform** and can be configured locally before deployment to AWS.

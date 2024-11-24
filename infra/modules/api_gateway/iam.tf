@@ -1,5 +1,6 @@
 resource "aws_iam_role" "execution_role" {
-  name = "nutrifai-api-gateway-execution-role"
+  name                = "api-gateway-core-execution-role"
+
   managed_policy_arns = [
     aws_iam_policy.execution_policy.arn
   ]
@@ -20,7 +21,7 @@ resource "aws_iam_role" "execution_role" {
 }
 
 resource "aws_iam_policy" "execution_policy" {
-  name        = "nutrifai-api-gateway-execution-policy"
+  name        = "api-gateway-core-execution-policy"
   path        = "/"
   description = "Grant access for API Gateway to invoke other services"
 
