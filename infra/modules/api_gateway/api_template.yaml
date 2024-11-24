@@ -1,27 +1,71 @@
 openapi: 3.0.3
+
 info:
-  title: NutrifAI App API
-  description: API defining the operations available in the NutrifAI App
+  title: NutrifAI API
+  description: API defining the operations available in the NutrifAI APP
   version: 1.0
+
 paths:
   /login:
     post:
       x-amazon-apigateway-integration:
-        $ref: "#/components/x-amazon-apigateway-integrations/lambda-authorizer"
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-login"
   /register:
     post:
       x-amazon-apigateway-integration:
-        $ref: "#/components/x-amazon-apigateway-integrations/lambda-authorizer"
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-login"
   /logout:
     post:
       x-amazon-apigateway-integration:
-        $ref: "#/components/x-amazon-apigateway-integrations/lambda-authorizer"
-  /generateDiet:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-login"
+  /diets:
     get:
       x-amazon-apigateway-integration:
-        $ref: "#/components/x-amazon-apigateway-integrations/lambda-generate-diet"
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-diet-generator"
       security:
         - session_authorizer: []
+    post:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-diet-generator"
+      security:
+        - session_authorizer: []
+
+  /diets/{dietId}:
+    get:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-diet-generator"
+      security:
+        - session_authorizer: []
+
+  
+  /nutritionist:
+    get:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-nutritionist"
+      security:
+        - session_authorizer: []
+
+  /nutritionist/{nutriId}/appointments:
+    post:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-nutritionist"
+      security:
+        - session_authorizer: []
+  
+  /nutritionist/{nutriId}/appointments/{appointmentId}:
+    put:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-nutritionist"
+      security:
+        - session_authorizer: []
+
+  /nutritionist/{nutriId}/appointments/{appointmentId}/book:
+    put:
+      x-amazon-apigateway-integration:
+        $ref: "#/components/x-amazon-apigateway-integrations/lambda-nutritionist"
+      security:
+        - session_authorizer: []
+
 components:
   securitySchemes:
     session_authorizer:
@@ -36,20 +80,29 @@ components:
         authorizerResultTtlInSeconds: 1
         type: "request"
         enableSimpleResponses: true
+
   x-amazon-apigateway-integrations:
-    lambda-generate-diet:
+    lambda-nutritionist:
       type: "aws_proxy"
       httpMethod: "POST"
       credentials: "${execution_role}"
-      uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${aws_account_id}:function:lambda-generate-diet/invocations"
+      uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${aws_account_id}:function:lambda-nutritionist/invocations"
       passthroughBehavior: "when_no_match"
       timeoutInMillis: 29000
       payloadFormatVersion: 2.0
-    lambda-authorizer:
+    lambda-diet-generator:
       type: "aws_proxy"
       httpMethod: "POST"
       credentials: "${execution_role}"
-      uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${aws_account_id}:function:lambda-authorizer/invocations"
+      uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${aws_account_id}:function:lambda-diet-generator/invocations"
+      passthroughBehavior: "when_no_match"
+      timeoutInMillis: 29000
+      payloadFormatVersion: 2.0
+    lambda-login:
+      type: "aws_proxy"
+      httpMethod: "POST"
+      credentials: "${execution_role}"
+      uri: "arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:${aws_account_id}:function:lambda-login/invocations"
       passthroughBehavior: "when_no_match"
       timeoutInMillis: 29000
       payloadFormatVersion: 2.0

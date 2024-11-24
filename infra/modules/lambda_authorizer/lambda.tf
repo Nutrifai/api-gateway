@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "authorizer" {
-  function_name    =   var.lambda_authorizer_name
+  function_name    = var.lambda_authorizer_name
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
   role             = aws_iam_role.lambda_authorizer_role.arn
